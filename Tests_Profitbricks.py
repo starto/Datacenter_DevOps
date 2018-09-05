@@ -266,20 +266,12 @@ class TestVirtualDataCenter(unittest.TestCase):
              server_id=self.server1_id
          )
 
-         #print("\n=====Updated Server1 details========\n")
-         #pprint(server['properties']['name'])
-         #pprint(server['properties']['cores'])
-         #pprint(server['properties']['ram'])
-
          self.assertEqual(server['id'], self.server1_id)
          self.assertEqual(server['properties']['name'], self.resource['Updated_Server1']['name'])
          self.assertEqual(server['properties']['cores'], self.resource['Updated_Server1']['cores'])
          self.assertEqual(server['properties']['ram'], self.resource['Updated_Server1']['ram'])
 
     # Testcase-2: Check whether the ‘Frontend’ Server is up and running.
-    # Raised a case with profitbricks cusotmer 5 days ago but issue still not present
-    # not able to login to Ubuntu Server, no API to login to remote console. default remote root credentials are not working.
-    # I am proposing multiple alternative solutions here
     def test_is_frontend_server_up(self):
 
         self.server_start = self.client.start_server(
@@ -312,19 +304,7 @@ class TestVirtualDataCenter(unittest.TestCase):
         pprint("\n=======Get the attached CD-ROM:=======\n")
         ## you can test for all other datacenter elements like: Servers, NICs, LANs, Volumes, CD-ROMS etc like tested in testcase-1
 
-        '''
-        Raised a case with ProfitBricks Customer care team: case #130868
-        I am not able to remotely login to Ubuntu server after attaching the Profitbricks Ubuntu 16.x IOS image.
-        Default root credentials didn't work, the default Image password I had setup failed as well.
-        
-        Tried reaching out to customer care team but off to no avail. Query hasn't been completed addressed.
-        
-        >> Unless we have access to server, we cannot conclusively say: Test case #2 (Server up) and #4 (Copy Scenario)
-           are working fine: I am proposing multiple solutions here to overcome this.
-
-        ##NOTE:: All the below approaches are written for serial 1 server - but, this can easily be translated to: 
-        multi-processing and threading for scalabile 1000+ servers cases (using multiprocessing and threading modules)
-        
+        '''       
         Solution - 1: start_server API and check all server id, properties etc (whichwere checked in testcase#1) can be leveraged.
         Solution - 2: Checking if remote SSH to Ubunutu server is working fine (Solution below)
         Solution - 3:   i) Checking 'uptime' of the server using uptime module; this is OS/Platform agnostic module
@@ -424,8 +404,8 @@ class TestVirtualDataCenter(unittest.TestCase):
     '''
 
 ## Check the NIC IPs & Print the data center properties and nested resources with depth
-# response = self.client.get_datacenter(datacenter_id=self.datacenter_id, depth=5)
-#print(json.dumps(response, indent=4))
+    response = self.client.get_datacenter(datacenter_id=self.datacenter_id, depth=5)
+    print(json.dumps(response, indent=4))
 
 if __name__ == '__main__':
     unittest.main()
